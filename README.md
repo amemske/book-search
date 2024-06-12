@@ -6,7 +6,6 @@ After you have started the server  http://localhost:4000/ run
 cd .\frontend\
 ```
 
-### Data
 Then install dependancies
 
 ```bash
@@ -20,7 +19,4 @@ npm run dev
 ```
 
 This start a  server at the url `http://localhost:5173/` 
-
-
-
 

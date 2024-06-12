@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useReadingList } from '../context/ReadingListContext';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -8,23 +9,29 @@ import Typography from '@mui/material/Typography';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const Book =  ({title, author, coverPhotoURL, onAddToReadingList, onRemoveFromReadingList}) => {
+const Book =  ({title, author, coverPhotoURL}) => {
+  const { addToReadingList, removeFromReadingList, readingList } = useReadingList();
 
     const [isInReadingList, setIsInReadingList] = useState(false);
 
-  const handleClick = () => {
-    setIsInReadingList(!isInReadingList);
-    if (!isInReadingList) {
-      onAddToReadingList();
-    } else {
-      onRemoveFromReadingList();
-    }
-  };
+    useEffect(() => {
+      const isBookInList = readingList.some(book => book.title === title);
+      setIsInReadingList(isBookInList);
+    }, [readingList, title]);
+  
+    const handleClick = () => {
+      if (!isInReadingList) {
+        addToReadingList({ title, author, coverPhotoURL });
+      } else {
+        removeFromReadingList(title);
+      }
+      setIsInReadingList(!isInReadingList);
+    };
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ boxShadow: '0 8px 20px 1px rgba(0,0,0,.05)' }}>
         <CardMedia
             component="img"
             alt={title}
@@ -41,9 +48,10 @@ const Book =  ({title, author, coverPhotoURL, onAddToReadingList, onRemoveFromRe
         </CardContent>
         <CardActions>
           
-            <Button size="small" onClick={() => {onAddToReadingList(); handleClick();} }>
-            {isInReadingList ?    <BookmarkAddedIcon/> : <BookmarkIcon/>} 
-              {isInReadingList ? 'Added to Reading List' : 'Add to Reading List'}</Button>
+        <Button size="small" onClick={handleClick}>
+          {isInReadingList ? <BookmarkAddedIcon /> : <BookmarkIcon />}
+          {isInReadingList ? 'Added to Reading List' : 'Add to Reading List'}
+        </Button>
             
         </CardActions>
     </Card>
