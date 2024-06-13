@@ -1,6 +1,6 @@
 
 ### Solution
-After you have started the server  http://localhost:4000/ run
+After you have started the backend server  http://localhost:4000/ run
 
 ```bash
 cd .\frontend\
@@ -18,5 +18,5 @@ Then run the following command to start the client react app
 npm run dev
 ```
 
-This start a  server at the url `http://localhost:5173/` 
+This start a client server at the url `http://localhost:5173/` 
 
